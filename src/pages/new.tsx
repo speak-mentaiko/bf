@@ -1,44 +1,84 @@
 import { useState } from "react";
-import { Input, Text, Box, VStack, HStack } from "@chakra-ui/react";
+import {
+  Input,
+  Box,
+  VStack,
+  HStack,
+  Button,
+  Heading,
+  Flex,
+  Spacer,
+  FormControl,
+  Text,
+} from "@chakra-ui/react";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
 
 export const New = () => {
-  const [markdownString, setMarkdownString] = useState<string | undefined>("");
+  const [contents, setContents] = useState<string | undefined>("");
+  const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
+  const [submit, setSubmit] = useState(false);
+
+  const isTitleError = title === "";
+  const isNameError = name === "";
+  const isContentsError = contents === "";
+
+  const isEroor = () => {
+    if (!isContentsError && !isNameError && !isTitleError) {
+      return true;
+    }
+  };
 
   return (
     <>
       <HStack mx="3rem" marginTop="2rem" w="auto" spacing="20rem">
         <VStack w="50rem">
-          <Text fontSize="xl" as="b">
+          <Heading fontSize="xl" as="b">
             タイトル
-          </Text>
-          <Input size="lg" placeholder="タイトル" />
+          </Heading>
+          <Input
+            size="lg"
+            placeholder="タイトル"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </VStack>
         <VStack w="30rem">
-          <Text fontSize="xl" as="b">
+          <Heading fontSize="xl" as="b">
             投稿者名
-          </Text>
-          <Input placeholder="投稿者名"></Input>
+          </Heading>
+          <Input
+            placeholder="投稿者名"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </VStack>
       </HStack>
-      <Box mx="3rem" marginTop="2rem" w="auto">
-        <Text fontSize="xl" as="b">
+      <Box mx="3rem" marginTop="2rem" w="auto" h="65vh">
+        <Heading fontSize="xl" as="b">
           本文
-        </Text>
+        </Heading>
         <MDEditor
-          value={markdownString}
-          onChange={setMarkdownString}
+          value={contents}
+          onChange={setContents}
           previewOptions={{
             rehypePlugins: [[rehypeSanitize]],
           }}
-          height="30rem"
+          height="100%"
         />
       </Box>
-      <MDEditor.Markdown
-        source={markdownString}
-        style={{ whiteSpace: "pre-wrap" }}
-      />
+      <Flex mx="3rem" marginTop="3rem" w="auto">
+        {isEroor() ? (
+          <Text></Text>
+        ) : (
+          <Text textColor="red" as="b">
+            内容が不足しています
+          </Text>
+        )}
+        <Spacer />
+        <Button onClick={() => setSubmit(!submit)}>投稿</Button>
+      </Flex>
     </>
   );
 };
