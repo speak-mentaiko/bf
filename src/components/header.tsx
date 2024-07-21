@@ -1,14 +1,21 @@
 import { Link as ReactRouterLink } from "react-router-dom";
-import { Button, Link as ChakraLink, HStack } from "@chakra-ui/react";
+import {
+  Button,
+  Link as ChakraLink,
+  HStack,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 import { MdCreate } from "react-icons/md";
 
 export const Header = () => {
   return (
     <>
-      <HStack>
+      <HStack mx="3rem" mt="1rem">
         <ChakraLink as={ReactRouterLink} to="/">
-          Blog
+          <Text fontSize="4xl">Blog</Text>
         </ChakraLink>
+        <Spacer />
         <ChakraLink as={ReactRouterLink} to="/new">
           <Button>
             <MdCreate />
