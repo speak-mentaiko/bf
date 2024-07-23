@@ -8,77 +8,107 @@ import {
   Heading,
   Flex,
   Spacer,
-  FormControl,
   Text,
 } from "@chakra-ui/react";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
 
 export const New = () => {
-  const [contents, setContents] = useState<string | undefined>("");
+  const [body, setbody] = useState<string | undefined>("");
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
-  const [submit, setSubmit] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const isTitleError = title === "";
   const isNameError = name === "";
-  const isContentsError = contents === "";
+  const isBodyError = body === "";
 
-  const isEroor = () => {
-    if (!isContentsError && !isNameError && !isTitleError) {
+  const isError = () => {
+    if (!isBodyError && !isNameError && !isTitleError) {
       return true;
+    }
+  };
+
+  const postData = () => {
+    if (isError()) {
+      let datas = { title: title, name: name, body: body };
+      fetch(`${import.meta.env.VITE_API_URL}/contents/new`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datas),
+      })
+        .then((res) => {
+          res.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          setIsSubmit(true);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     }
   };
 
   return (
     <>
-      <HStack mx="3rem" marginTop="2rem" w="auto" spacing="20rem">
-        <VStack w="50rem">
-          <Heading fontSize="xl" as="b">
-            タイトル
-          </Heading>
-          <Input
-            size="lg"
-            placeholder="タイトル"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </VStack>
-        <VStack w="30rem">
-          <Heading fontSize="xl" as="b">
-            投稿者名
-          </Heading>
-          <Input
-            placeholder="投稿者名"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </VStack>
-      </HStack>
-      <Box mx="3rem" marginTop="2rem" w="auto" h="65vh">
-        <Heading fontSize="xl" as="b">
-          本文
-        </Heading>
-        <MDEditor
-          value={contents}
-          onChange={setContents}
-          previewOptions={{
-            rehypePlugins: [[rehypeSanitize]],
-          }}
-          height="100%"
-        />
-      </Box>
-      <Flex mx="3rem" marginTop="3rem" w="auto">
-        {isEroor() ? (
-          <Text></Text>
-        ) : (
-          <Text textColor="red" as="b">
-            内容が不足しています
-          </Text>
-        )}
-        <Spacer />
-        <Button onClick={() => setSubmit(!submit)}>投稿</Button>
-      </Flex>
+      {!isSubmit ? (
+        <>
+          <HStack mx="3rem" marginTop="2rem" w="auto" spacing="20rem">
+            <VStack w="50rem">
+              <Heading fontSize="xl" as="b">
+                タイトル
+              </Heading>
+              <Input
+                size="lg"
+                placeholder="タイトル"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </VStack>
+            <VStack w="30rem">
+              <Heading fontSize="xl" as="b">
+                投稿者名
+              </Heading>
+              <Input
+                placeholder="投稿者名"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </VStack>
+          </HStack>
+          <Box mx="3rem" marginTop="2rem" w="auto" h="65vh">
+            <Heading fontSize="xl" as="b">
+              本文
+            </Heading>
+            <MDEditor
+              value={body}
+              onChange={setbody}
+              previewOptions={{
+                rehypePlugins: [[rehypeSanitize]],
+              }}
+              height="100%"
+            />
+          </Box>
+          <Flex mx="3rem" marginTop="3rem" w="auto">
+            {isError() ? (
+              <Text></Text>
+            ) : (
+              <Text textColor="red" as="b">
+                内容が不足しています
+              </Text>
+            )}
+            <Spacer />
+            <Button onClick={() => postData()}>投稿</Button>
+          </Flex>
+        </>
+      ) : (
+        <>
+          <Flex mx="3rem" my="10rem" justify="center" align="center">
+            <Heading>投稿完了</Heading>
+          </Flex>
+        </>
+      )}
     </>
   );
 };
