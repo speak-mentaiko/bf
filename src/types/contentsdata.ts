@@ -1,6 +1,6 @@
 export type contentsdata = {
   id: number;
-  createAt: string;
+  createdAt: string;
   title: string;
   name: string;
   body: string;

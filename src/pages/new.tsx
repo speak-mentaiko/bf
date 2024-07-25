@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link as ReactRouterLink } from "react-router-dom";
 import {
   Input,
   Box,
@@ -9,6 +10,7 @@ import {
   Flex,
   Spacer,
   Text,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
@@ -104,9 +106,12 @@ export const New = () => {
         </>
       ) : (
         <>
-          <Flex mx="3rem" my="10rem" justify="center" align="center">
+          <VStack mx="3rem" my="10rem" justify="center" align="center">
             <Heading>投稿完了</Heading>
-          </Flex>
+            <ChakraLink as={ReactRouterLink} to="/">
+              <Text fontSize="xl">戻る</Text>
+            </ChakraLink>
+          </VStack>
         </>
       )}
     </>

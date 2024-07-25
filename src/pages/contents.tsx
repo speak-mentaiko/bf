@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Box, Heading, Text, VStack } from "@chakra-ui/react";
+import { useParams, Link as ReactRouterLink } from "react-router-dom";
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  Link as ChakraLink,
+} from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
@@ -11,6 +17,14 @@ import "../pages/styles/markdown.css";
 const isData = (data: contentsdata | undefined) => {
   if (data === undefined) return false;
   else return true;
+};
+
+const timedata = (data: contentsdata | undefined) => {
+  let time = `${data?.createdAt.slice(0, 4)}年${data?.createdAt.slice(
+    5,
+    7
+  )}月${data?.createdAt.slice(8, 10)}日`;
+  return time;
 };
 
 export const Contents = () => {
@@ -25,12 +39,17 @@ export const Contents = () => {
       .then((json) => setData(json));
   }, []);
 
+  let createTime = timedata(data);
   return (
     <>
       {isData(data) ? (
         <>
-          <VStack className="markdown">
+          <VStack>
+            <Text>投稿者：{data?.name}</Text>
             <Heading>{data?.title}</Heading>
+            <Text>{createTime}</Text>
+          </VStack>
+          <VStack className="markdown">
             <Box maxW="85vw">
               <ReactMarkdown
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
@@ -43,7 +62,12 @@ export const Contents = () => {
         </>
       ) : (
         <>
-          <Text>記事が見つかりません</Text>
+          <VStack my="7rem">
+            <Heading>記事が見つかりません</Heading>
+            <ChakraLink as={ReactRouterLink} to="/">
+              <Text fontSize="xl">戻る</Text>
+            </ChakraLink>
+          </VStack>
         </>
       )}
     </>
