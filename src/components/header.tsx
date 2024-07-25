@@ -17,7 +17,7 @@ export const Header = () => {
         </ChakraLink>
         <Spacer />
         <ChakraLink as={ReactRouterLink} to="/new">
-          <Button>
+          <Button bgColor="green.300">
             <MdCreate />
             New
           </Button>
