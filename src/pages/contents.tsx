@@ -8,11 +8,12 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import { contentsdata } from "../types/contentsdata";
-import "../pages/styles/markdown.css";
+import { newTheme } from "./styles/markdown";
 
 const isData = (data: contentsdata | undefined) => {
   if (data === undefined) return false;
@@ -52,6 +53,7 @@ export const Contents = () => {
           <VStack className="markdown">
             <Box maxW="85vw">
               <ReactMarkdown
+                components={ChakraUIRenderer(newTheme)}
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
                 remarkPlugins={[remarkGfm]}
               >
