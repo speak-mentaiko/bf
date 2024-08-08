@@ -40,13 +40,17 @@ export const Home = () => {
     <>
       <VStack>
         <Heading size="lg">記事一覧</Heading>
-        {data.map((list) => {
-          return (
-            <>
-              <ContentsCard data={list} />
-            </>
-          );
-        })}
+        {!data ? (
+          <Text>記事はありません</Text>
+        ) : (
+          data.map((list) => {
+            return (
+              <>
+                <ContentsCard data={list} />
+              </>
+            );
+          })
+        )}
       </VStack>
     </>
   );
