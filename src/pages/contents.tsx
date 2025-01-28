@@ -12,16 +12,16 @@ import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
-import { contentsdata } from "../types/contentsdata";
+import { contentsData } from "../types/contentsdata";
 import { newTheme } from "./styles/markdown";
 
-const isData = (data: contentsdata | undefined) => {
+const isData = (data: contentsData | undefined) => {
   if (data === undefined) return false;
   else return true;
 };
 
-const timedata = (data: contentsdata | undefined) => {
-  let time = `${data?.createdAt.slice(0, 4)}年${data?.createdAt.slice(
+const timeData = (data: contentsData | undefined) => {
+  const time = `${data?.createdAt.slice(0, 4)}年${data?.createdAt.slice(
     5,
     7
   )}月${data?.createdAt.slice(8, 10)}日`;
@@ -30,7 +30,7 @@ const timedata = (data: contentsdata | undefined) => {
 
 export const Contents = () => {
   const { id } = useParams<{ id: string }>();
-  const [data, setData] = useState<contentsdata | undefined>(undefined);
+  const [data, setData] = useState<contentsData | undefined>(undefined);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/contents/list/${id}`, {
@@ -38,9 +38,9 @@ export const Contents = () => {
     })
       .then((res) => res.json())
       .then((json) => setData(json));
-  }, []);
+  }, [id]);
 
-  let createTime = timedata(data);
+  const createTime = timeData(data);
   return (
     <>
       {isData(data) ? (

@@ -16,7 +16,7 @@ import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
 
 export const New = () => {
-  const [body, setbody] = useState<string | undefined>("");
+  const [body, setBody] = useState<string | undefined>("");
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
@@ -33,11 +33,11 @@ export const New = () => {
 
   const postData = () => {
     if (isError()) {
-      let datas = { title: title, name: name, body: body };
+      const data = { title: title, name: name, body: body };
       fetch(`${import.meta.env.VITE_API_URL}/contents/new`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datas),
+        body: JSON.stringify(data),
       })
         .then((res) => {
           res.json();
@@ -85,7 +85,7 @@ export const New = () => {
             </Heading>
             <MDEditor
               value={body}
-              onChange={setbody}
+              onChange={setBody}
               previewOptions={{
                 rehypePlugins: [[rehypeSanitize]],
               }}

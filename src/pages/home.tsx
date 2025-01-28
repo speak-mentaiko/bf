@@ -8,9 +8,9 @@ import {
   VStack,
   Link as ChakraLink,
 } from "@chakra-ui/react";
-import { contentsdata } from "../types/contentsdata";
+import { contentsData } from "../types/contentsdata";
 
-const ContentsCard = (props: { data: contentsdata }) => {
+const ContentsCard = (props: { data: contentsData }) => {
   const link = `/contents/${props.data.id}`;
   return (
     <>
@@ -28,7 +28,7 @@ const ContentsCard = (props: { data: contentsdata }) => {
 };
 
 export const Home = () => {
-  const [data, setData] = useState<contentsdata[]>([]);
+  const [data, setData] = useState<contentsData[]>([]);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/contents/list`, { method: "GET" })
