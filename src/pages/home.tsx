@@ -1,46 +1,27 @@
 import { useEffect, useState } from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
-import {
-  Heading,
-  HStack,
-  Spacer,
-  Text,
-  VStack,
-  Link as ChakraLink,
-} from "@chakra-ui/react";
-import { contentsData } from "../types/contentsdata";
+import { Heading, Text, VStack } from "@chakra-ui/react";
 
-const ContentsCard = (props: { data: contentsData }) => {
-  const link = `/contents/${props.data.id}`;
-  return (
-    <>
-      <ChakraLink as={ReactRouterLink} to={link}>
-        <HStack w="45rem" h="4rem" mx="3rem" my="0.5rem" bgColor="gray.100">
-          <Text mx="1rem" as="b">
-            {props.data.title}
-          </Text>
-          <Spacer />
-          <Text mx="1rem">{props.data.name}</Text>
-        </HStack>
-      </ChakraLink>
-    </>
-  );
-};
+import { ContentsData } from "../types/contentsdata";
+import { ContentsCard } from "../components/contentscard";
 
 export const Home = () => {
-  const [data, setData] = useState<contentsData[]>([]);
+  const [data, setData] = useState<ContentsData[]>([]);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/contents/list`, { method: "GET" })
       .then((res) => res.json())
-      .then((json) => setData(json));
+      .then((json) => setData(json))
+      .catch((error) => {
+        console.error(error);
+        setData([]);
+      });
   }, []);
 
   return (
     <>
       <VStack>
         <Heading size="lg">記事一覧</Heading>
-        {!data ? (
+        {!data.length ? (
           <Text>記事はありません</Text>
         ) : (
           data.map((list) => {

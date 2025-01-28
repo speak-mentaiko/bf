@@ -1,4 +1,4 @@
-export type contentsData = {
+export type ContentsData = {
   id: number;
   createdAt: string;
   title: string;

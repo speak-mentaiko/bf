@@ -12,15 +12,15 @@ import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
-import { contentsData } from "../types/contentsdata";
+import { ContentsData } from "../types/contentsdata";
 import { newTheme } from "./styles/markdown";
 
-const isData = (data: contentsData | undefined) => {
+const isData = (data: ContentsData | undefined) => {
   if (data === undefined) return false;
   else return true;
 };
 
-const timeData = (data: contentsData | undefined) => {
+const timeData = (data: ContentsData | undefined) => {
   const time = `${data?.createdAt.slice(0, 4)}年${data?.createdAt.slice(
     5,
     7
@@ -30,7 +30,7 @@ const timeData = (data: contentsData | undefined) => {
 
 export const Contents = () => {
   const { id } = useParams<{ id: string }>();
-  const [data, setData] = useState<contentsData | undefined>(undefined);
+  const [data, setData] = useState<ContentsData | undefined>(undefined);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/contents/list/${id}`, {
